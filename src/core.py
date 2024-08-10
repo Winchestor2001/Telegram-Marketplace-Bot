@@ -8,7 +8,6 @@ from starlette.staticfiles import StaticFiles
 
 from src.db.dependencies import db_helper
 from src.logging_conf import setup_logger
-from src.settings import settings
 
 APP_ROOT = Path(__file__).parent
 setup_logger()

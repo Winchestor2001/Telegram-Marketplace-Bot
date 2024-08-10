@@ -1,7 +1,7 @@
 import logging
 import uvicorn
 
-# from src.apps.api.routers import api_router
+from src.apps import api_router
 from src.core import create_app
 from src.settings import settings
 
@@ -9,7 +9,7 @@ logger = logging.getLogger('fastapi_app')
 
 main_app = create_app()
 
-# main_app.include_router(api_router)
+main_app.include_router(api_router)
 
 
 if __name__ == "__main__":
