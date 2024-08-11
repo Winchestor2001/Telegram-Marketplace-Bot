@@ -15,7 +15,7 @@ class BaseSchema(BaseModel):
 
 class Category(BaseSchema):
     name: str
-    products: List["Product"] | None = []
+    products: List["SingleProduct"] | None = []
 
     class Config:
         from_attributes = True
@@ -30,6 +30,15 @@ class CreateCategory(BaseModel):
 
 class SingleCategory(BaseSchema):
     name: str
+
+    class Config:
+        from_attributes = True
+
+
+class SingleProduct(BaseSchema):
+    name: str
+    image: str
+    description: str
 
     class Config:
         from_attributes = True
