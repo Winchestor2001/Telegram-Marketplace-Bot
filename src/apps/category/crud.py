@@ -14,7 +14,7 @@ async def create_category_obj(session: AsyncSession, data: dict) -> Category:
 
 
 async def get_categories_obj(session: AsyncSession) -> Sequence[Category]:
-    categories = select(Category).options(selectinload(Category.products))
+    categories = select(Category)
     result = await session.execute(categories)
     return result.scalars().all()
 

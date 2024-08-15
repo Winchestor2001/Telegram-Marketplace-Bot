@@ -1,7 +1,11 @@
 from typing import List
 from datetime import datetime
+import logging
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, root_validator, validator
+
+
+logger = logging.getLogger(__name__)
 
 
 class BaseSchema(BaseModel):
@@ -15,7 +19,6 @@ class BaseSchema(BaseModel):
 
 class Category(BaseSchema):
     name: str
-    products: List["SingleProduct"] | None = []
 
     class Config:
         from_attributes = True
@@ -44,11 +47,22 @@ class SingleProduct(BaseSchema):
         from_attributes = True
 
 
+class ProductImages(BaseModel):
+    image: str
+
+    class Config:
+        from_attributes = True
+
+
 class Product(BaseSchema):
     name: str
-    image: str
     description: str
+    views: int
+    is_buy: bool
+    lat: float
+    long: float
     category: SingleCategory
+    images: List[ProductImages]
 
     class Config:
         from_attributes = True
@@ -58,7 +72,15 @@ class CreateProduct(BaseModel):
     name: str
     image: str
     description: str
+    lat: float
+    long: float
     category_uuid: str
 
     class Config:
         from_attributes = True
+
+
+class FilterProduct(BaseModel):
+    name: str | None = None
+    category_uuid: str | None = None
+
