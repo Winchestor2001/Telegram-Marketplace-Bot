@@ -8,7 +8,6 @@ if TYPE_CHECKING:
 
 class Product(Base, BaseMixin):
     name: Mapped[str]
-    image: Mapped[str] = mapped_column(nullable=True)
     description: Mapped[str] = mapped_column(nullable=True)
     views: Mapped[int] = mapped_column(default=0, nullable=True)
     is_buy: Mapped[bool] = mapped_column(default=False, nullable=True)
@@ -20,8 +19,14 @@ class Product(Base, BaseMixin):
 
     images: Mapped[List["ProductImage"]] = relationship(back_populates="product")
 
+    def __str__(self):
+        return self.name
+
 
 class ProductImage(Base, BaseMixin):
     image: Mapped[str]
     product_uuid: Mapped[str] = mapped_column(ForeignKey('products.uuid'))
     product: Mapped["Product"] = relationship(back_populates="images")
+
+    def __str__(self):
+        return self.image

@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 from pydantic import PostgresDsn
 from pydantic_settings import (
@@ -46,6 +48,11 @@ class TokenConfig(BaseModel):
     algorithm: str = "HS256"
 
 
+class AdminConfig(BaseModel):
+    usernames: List[str] = ["root", "admin"]
+    passwords: List[str] = ["123", "qwerty"]
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=("../.env", ".env"),
@@ -56,6 +63,7 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     token: TokenConfig = TokenConfig()
+    admin: AdminConfig = AdminConfig()
     redis: RedisSettings = RedisSettings()
     db: DatabaseConfig
 

@@ -7,3 +7,6 @@ if TYPE_CHECKING:
 class Category(Base, BaseMixin):
     name: Mapped[str]
     products: Mapped[List["Product"]] = relationship("Product", back_populates="category")
+
+    def __str__(self):
+        return self.name

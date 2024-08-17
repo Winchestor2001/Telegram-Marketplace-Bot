@@ -70,11 +70,11 @@ class Product(BaseSchema):
 
 class CreateProduct(BaseModel):
     name: str
-    image: str
     description: str
     lat: float
     long: float
     category_uuid: str
+    images: List[str] = None
 
     class Config:
         from_attributes = True

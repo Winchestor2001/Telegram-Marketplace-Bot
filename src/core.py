@@ -4,10 +4,15 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from sqladmin.templating import Jinja2Templates
 from starlette.staticfiles import StaticFiles
 
-from src.db.dependencies import db_helper
+from src.db import db_helper
+from src.admin_models import ProductAdmin, ProductImageAdmin, ProfileAdmin, CategoryAdmin, AdminAuth
 from src.logging_conf import setup_logger
+from sqladmin import Admin
+
+from src.settings import settings
 
 APP_ROOT = Path(__file__).parent
 setup_logger()
@@ -32,6 +37,15 @@ def mount_folders(app: FastAPI):
     app.mount("/media", StaticFiles(directory=APP_ROOT / "media"), name="media")
 
 
+def register_admin_models(app: FastAPI):
+    authentication_backend = AdminAuth(secret_key=settings.token.secret_key)
+    admin = Admin(app=app, engine=db_helper.engine, authentication_backend=authentication_backend)
+    admin.add_view(ProfileAdmin)
+    admin.add_view(ProductAdmin)
+    admin.add_view(ProductImageAdmin)
+    admin.add_view(CategoryAdmin)
+
+
 def create_app() -> FastAPI:
     logger.debug("Creating app...")
     app = FastAPI(
@@ -52,4 +66,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    templates = Jinja2Templates(directory="src/templates")
+    register_admin_models(app)
+
     return app
