@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqladmin.templating import Jinja2Templates
 from starlette.staticfiles import StaticFiles
 
+from src.bot import bot_configurations
+from src.bot.app import startup_client_bot, shutdown_client_bot
 from src.db import db_helper
 from src.admin_models import ProductAdmin, ProductImageAdmin, ProfileAdmin, CategoryAdmin, AdminAuth
 from src.logging_conf import setup_logger
@@ -19,12 +21,18 @@ setup_logger()
 
 logger = logging.getLogger('fastapi_app')
 
+client_bot, client_webhook_url, client_webhook_path, client_dp = bot_configurations(
+    settings.bot.BOT_TOKEN, 'client_bot'
+)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
+    await startup_client_bot(client_bot, client_webhook_url, client_dp)
     yield
     # shutdown
+    await shutdown_client_bot(client_bot, client_dp)
     await db_helper.dispose()
 
 

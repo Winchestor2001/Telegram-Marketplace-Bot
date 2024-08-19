@@ -27,17 +27,17 @@ async def category_list(
     return [Category.from_orm(category) for category in categories]
 
 
-@router.post("/category_create", response_model=CreateCategory)
-async def category_create(
-        session: Annotated[
-            AsyncSession,
-            Depends(db_helper.session_getter),
-        ],
-        category_data: CreateCategory
-):
-    """
-    Get list of categories.
-    """
-    # TODO: Implement logic to get categories from database
-
-    return await crud.create_category_obj(session, category_data.dict())
+# @router.post("/category_create", response_model=CreateCategory)
+# async def category_create(
+#         session: Annotated[
+#             AsyncSession,
+#             Depends(db_helper.session_getter),
+#         ],
+#         category_data: CreateCategory
+# ):
+#     """
+#     Get list of categories.
+#     """
+#     # TODO: Implement logic to get categories from database
+#
+#     return await crud.create_category_obj(session, category_data.dict())

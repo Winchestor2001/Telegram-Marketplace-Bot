@@ -53,6 +53,11 @@ class AdminConfig(BaseModel):
     passwords: List[str] = ["123", "qwerty"]
 
 
+class BotConfig(BaseModel):
+    BOT_TOKEN: str = "..."
+    WEBAPP_URL: str = "https://google.com"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=("../.env", ".env"),
@@ -64,6 +69,7 @@ class Settings(BaseSettings):
     api: ApiPrefix = ApiPrefix()
     token: TokenConfig = TokenConfig()
     admin: AdminConfig = AdminConfig()
+    bot: BotConfig = BotConfig()
     redis: RedisSettings = RedisSettings()
     db: DatabaseConfig
 

@@ -2,6 +2,7 @@ import logging
 
 from sqladmin import ModelView
 from sqladmin.authentication import AuthenticationBackend
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
@@ -44,7 +45,7 @@ class ProductImageAdmin(ModelView, model=ProductImage):
 
 
 class CategoryAdmin(ModelView, model=Category):
-    column_list = [Category.uuid, Category.name]
+    column_list = [Category.uuid, Category.name, Category.obj_state]
     column_searchable_list = [Category.name, Category.uuid]
 
 

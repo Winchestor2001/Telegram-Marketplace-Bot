@@ -42,6 +42,7 @@ class SingleProduct(BaseSchema):
     name: str
     image: str
     description: str
+    price: float
 
     class Config:
         from_attributes = True
@@ -59,6 +60,7 @@ class Product(BaseSchema):
     description: str
     views: int
     is_buy: bool
+    price: float
     lat: float
     long: float
     category: SingleCategory
@@ -69,8 +71,10 @@ class Product(BaseSchema):
 
 
 class CreateProduct(BaseModel):
+    telegram_id: int
     name: str
     description: str
+    price: float
     lat: float
     long: float
     category_uuid: str

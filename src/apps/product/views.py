@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.apps.product.utils import base64_image_saver
+from src.apps.profile.crud import get_user_info_obj
 from src.apps.schemas import Product, CreateProduct, FilterProduct
 from src.apps.product import crud
 from src.db import db_helper
@@ -47,6 +48,11 @@ async def product_create(
     product_uuid = str(uuid.uuid4())
     product_data = product_data.dict()
     product_data['uuid'] = product_uuid
+    profile = await get_user_info_obj(session, product_data['telegram_id'])
+    if not profile:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User not found")
+
+    product_data['telegram_id'] = profile.uuid
     product_images = product_data.pop('images')
     new_product = await crud.create_product_obj(session, product_data)
 

@@ -14,7 +14,7 @@ async def create_category_obj(session: AsyncSession, data: dict) -> Category:
 
 
 async def get_categories_obj(session: AsyncSession) -> Sequence[Category]:
-    categories = select(Category)
+    categories = select(Category).where(Category.obj_state == 1)
     result = await session.execute(categories)
     return result.scalars().all()
 
